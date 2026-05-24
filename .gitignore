@@ -1,0 +1,60 @@
+# ── Large / generated data ────────────────────────────────────────────────────
+batch_test_results/overlays/
+batch_test_results/originals/
+kaggle_data/
+
+# ── Writable runtime dirs ─────────────────────────────────────────────────────
+history/
+__pycache__/
+*.pyc
+*.pyo
+
+# ── Kaggle credentials (NEVER commit) ────────────────────────────────────────
+.kaggle/
+kaggle.json
+
+# ── PyInstaller build artefacts ───────────────────────────────────────────────
+dist/
+build/
+*.spec
+*.zip
+
+# ── Node / npm (report builder, not needed for app) ──────────────────────────
+node_modules/
+package.json
+package-lock.json
+
+# ── Report / diagram build scripts and outputs ───────────────────────────────
+build_report.js
+build_report_v9.js
+make_diagrams.py
+create_endsem_ppt.py
+report_images/
+pdf_pages/
+pdf_pages2/
+v6_unpacked/
+*.docx
+*.pptx
+*.pdf
+
+# ── Debug / screenshot artefacts ─────────────────────────────────────────────
+*.log
+app_screenshot_full.png
+img_demo_tab.png
+img_validation_full.png
+screen_*.png
+tab_*.png
+
+# ── Windows build scripts ─────────────────────────────────────────────────────
+run.bat
+build_exe.bat
+launcher.py
+
+# ── Claude session files ──────────────────────────────────────────────────────
+.claude/
+
+# ── OS / editor noise ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+*.swp
+midsem_content.txt
