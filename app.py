@@ -78,12 +78,34 @@ def _build_css(dark: bool) -> str:
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-  html, body, [data-testid="stAppViewContainer"],
-  [data-testid="stMain"], .main, .block-container {{
+  /* ── Full-page background (all Streamlit container variants) ── */
+  html, body,
+  [data-testid="stAppViewContainer"],
+  [data-testid="stMain"],
+  [data-testid="stMainBlockContainer"],
+  .main, .block-container,
+  section.main > div,
+  div[class*="appview-container"],
+  div[class*="main"] {{
     background: {bg} !important;
     font-family: 'Inter', sans-serif !important;
   }}
   .block-container {{ padding-top: 1.5rem !important; }}
+
+  /* ── Header / toolbar strip ── */
+  [data-testid="stHeader"],
+  [data-testid="stToolbar"],
+  header[data-testid="stHeader"] {{
+    background: {bg} !important;
+    border-bottom: 1px solid {brd} !important;
+  }}
+  [data-testid="stHeader"] * {{ color: {txt2} !important; }}
+
+  /* ── Bottom toolbar ── */
+  [data-testid="stStatusWidget"],
+  [data-testid="stDecoration"] {{
+    background: {bg} !important;
+  }}
 
   [data-testid="stMain"] p, [data-testid="stMain"] span,
   [data-testid="stMain"] label, [data-testid="stMain"] div,
