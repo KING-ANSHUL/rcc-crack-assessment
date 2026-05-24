@@ -37,6 +37,184 @@ from datetime import datetime
 import pandas as pd
 from pdf_report import build_pdf
 
+
+# ── Theme CSS builder ─────────────────────────────────────────────────────────
+def _build_css(dark: bool) -> str:
+    """Return the full <style> block for dark or light mode."""
+    if dark:
+        bg   = "#0e1117"; surf  = "#0d1525"; surf2 = "#141c25"
+        deep = "#0a1628"; inp   = "#0f172a"; tab_a = "#0f1f3d"
+        brd  = "#1e293b"; brd2  = "#1e2a3a"
+        txt  = "#cbd5e1"; txt2  = "#94a3b8"; txt3  = "#64748b"; txt4 = "#475569"
+        hdg  = "#f1f5f9"; acc   = "#4A7FA5"; acc_b = "#7aafc7"
+        sbbg = "#0d1117"; sc_t  = "#0d1117"; sc_th = "#2d3f50"
+        bpb  = "#1d4ed8"; bsb   = "#0d1525"; bsbr  = "#2d3748"; bst  = "#94a3b8"
+        bdb  = "#0d2960"; bdbr  = "#1d4ed8"; bdt   = "#93c5fd"
+        upbg = "#0d1525"; upbr  = "#2d3748"
+        albg = "#0a1628"; albr  = "#1d4ed8"
+        tbg  = "#0d1525"; thbg  = "#0f1f3d"; tht   = "#7aafc7"
+        ttd  = "#94a3b8"; ttdb  = "#111827"; ttr   = "#0f1f3d"
+        gbg  = "#1e293b"; ebg   = "#0d1525"; ebr   = "#1e3a5f"; et = "#334155"
+        cbg  = "#0a1628"; wbg   = "#1a0e00"; xbg   = "#1a0000"
+        tact = "#4A7FA5"; tcol  = "#64748b"
+    else:
+        bg   = "#FFFFFF"; surf  = "#F8FAFC"; surf2 = "#EFF6FF"
+        deep = "#EFF6FF"; inp   = "#FFFFFF"; tab_a = "#EFF6FF"
+        brd  = "#E2E8F0"; brd2  = "#E2E8F0"
+        txt  = "#334155"; txt2  = "#475569"; txt3  = "#64748B"; txt4 = "#94A3B8"
+        hdg  = "#0F172A"; acc   = "#2563EB"; acc_b = "#2563EB"
+        sbbg = "#F1F5F9"; sc_t  = "#F1F5F9"; sc_th = "#CBD5E1"
+        bpb  = "#2563EB"; bsb   = "#F8FAFC"; bsbr  = "#E2E8F0"; bst  = "#475569"
+        bdb  = "#EFF6FF"; bdbr  = "#3B82F6"; bdt   = "#1D4ED8"
+        upbg = "#F8FAFC"; upbr  = "#CBD5E1"
+        albg = "#EFF6FF"; albr  = "#3B82F6"
+        tbg  = "#F8FAFC"; thbg  = "#EFF6FF"; tht   = "#2563EB"
+        ttd  = "#475569"; ttdb  = "#F1F5F9"; ttr   = "#EFF6FF"
+        gbg  = "#E2E8F0"; ebg   = "#F8FAFC"; ebr   = "#BFDBFE"; et = "#94A3B8"
+        cbg  = "#EFF6FF"; wbg   = "#FFF7ED"; xbg   = "#FFF1F2"
+        tact = "#2563EB"; tcol  = "#64748B"
+
+    return f"""
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+  html, body, [data-testid="stAppViewContainer"],
+  [data-testid="stMain"], .main, .block-container {{
+    background: {bg} !important;
+    font-family: 'Inter', sans-serif !important;
+  }}
+  .block-container {{ padding-top: 1.5rem !important; }}
+
+  [data-testid="stMain"] p, [data-testid="stMain"] span,
+  [data-testid="stMain"] label, [data-testid="stMain"] div,
+  [data-testid="stMain"] li, [data-testid="stMain"] td,
+  [data-testid="stMain"] th,
+  [data-testid="stMarkdownContainer"] p,
+  [data-testid="stMarkdownContainer"] li {{ color: {txt} !important; }}
+
+  [data-testid="stMain"] h1, [data-testid="stMain"] h2,
+  [data-testid="stMain"] h3 {{ color: {hdg} !important; }}
+
+  [data-testid="stSidebar"], [data-testid="stSidebar"] > div {{ background: {sbbg} !important; }}
+  [data-testid="stSidebar"] p, [data-testid="stSidebar"] span,
+  [data-testid="stSidebar"] label, [data-testid="stSidebar"] small,
+  [data-testid="stSidebar"] .stMarkdown {{ color: {txt2} !important; }}
+  [data-testid="stSidebar"] h3 {{ color: {hdg} !important; font-size: 0.88rem; letter-spacing: .06em; text-transform: uppercase; }}
+  [data-testid="stSidebar"] [data-baseweb="select"] > div {{ background: {inp} !important; border-color: {brd} !important; color: {hdg} !important; }}
+  [data-testid="stSidebar"] hr {{ border-color: {brd2} !important; }}
+  [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {{ color: {txt3} !important; }}
+
+  [data-testid="stRadio"] label, [data-testid="stRadio"] p, [data-testid="stRadio"] span,
+  [data-testid="stFileUploader"] label, [data-testid="stNumberInput"] label,
+  [data-testid="stSlider"] label, [data-testid="stSelectbox"] label,
+  [data-testid="stTextArea"] label, [data-testid="stWidgetLabel"],
+  [data-testid="stWidgetLabel"] p {{ color: {txt2} !important; font-size: 0.82rem !important; }}
+
+  [data-baseweb="input"] input, [data-baseweb="select"] input,
+  [data-baseweb="textarea"] textarea {{ background: {inp} !important; color: {hdg} !important; border-color: {brd} !important; }}
+  [data-baseweb="select"] > div {{ background: {inp} !important; border-color: {brd} !important; color: {hdg} !important; }}
+  [data-baseweb="popover"] ul {{ background: {inp} !important; }}
+  [data-baseweb="popover"] li {{ color: {txt} !important; }}
+  [data-baseweb="popover"] li:hover {{ background: {surf} !important; }}
+  [data-testid="stNumberInput"] input {{ background: {inp} !important; color: {hdg} !important; }}
+
+  [data-testid="stSlider"] [data-baseweb="slider"] div {{ background: {brd} !important; }}
+  [data-testid="stCaptionContainer"] p {{ color: {txt3} !important; font-size: 0.78rem !important; }}
+
+  [data-testid="stTabs"] {{ border-bottom: 1px solid {brd} !important; }}
+  [data-testid="stTabs"] button {{
+    background: transparent !important; color: {tcol} !important;
+    font-weight: 600 !important; font-size: 0.82rem !important; letter-spacing: .03em !important;
+  }}
+  [data-testid="stTabs"] button p {{ color: {tcol} !important; }}
+  [data-testid="stTabs"] button[aria-selected="true"] {{ background: {tab_a} !important; border-bottom: 2px solid {tact} !important; }}
+  [data-testid="stTabs"] button[aria-selected="true"] p {{ color: {acc_b} !important; font-weight: 700 !important; }}
+
+  [data-testid="stExpander"] {{ background: {surf} !important; border: 1px solid {brd} !important; border-radius: 4px !important; }}
+  [data-testid="stExpander"] summary {{ color: {txt2} !important; }}
+  [data-testid="stExpander"] summary p {{ color: {txt2} !important; }}
+
+  [data-testid="stDataFrame"] {{ background: {tbg} !important; border-radius: 4px !important; }}
+  [data-testid="stDataFrame"] th {{ background: {thbg} !important; color: {tht} !important; }}
+  [data-testid="stDataFrame"] td {{ color: {txt} !important; background: {tbg} !important; }}
+
+  div[data-testid="stImage"] img {{ border-radius: 4px; border: 1px solid {brd}; }}
+
+  .card {{
+    background: {surf}; border: 1px solid {brd};
+    border-radius: 4px; padding: 16px 18px; margin-bottom: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }}
+  .card * {{ color: {txt} !important; }}
+  .card-title {{
+    font-size: 0.78rem; font-weight: 700; letter-spacing: .07em;
+    text-transform: uppercase; color: {acc} !important;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+  }}
+
+  .risk-banner {{ border-radius: 4px; padding: 18px 24px; text-align: center; margin-bottom: 14px; }}
+  .risk-Low      {{ background: #052e16; border: 1px solid #16a34a; }}
+  .risk-Moderate {{ background: #1c1400; border: 1px solid #ca8a04; }}
+  .risk-High     {{ background: #1c0a00; border: 1px solid #ea580c; }}
+  .risk-Critical {{ background: #1a0000; border: 1px solid #dc2626; }}
+
+  .badge {{ display: inline-block; padding: 5px 20px; border-radius: 2px; font-weight: 800; font-size: 0.9rem; letter-spacing: 1px; }}
+  .badge-Low      {{ background: #14532d; color: #4ade80 !important; border: 1px solid #16a34a; }}
+  .badge-Moderate {{ background: #422006; color: #fbbf24 !important; border: 1px solid #ca8a04; }}
+  .badge-High     {{ background: #431407; color: #fb923c !important; border: 1px solid #ea580c; }}
+  .badge-Critical {{ background: #450a0a; color: #f87171 !important; border: 1px solid #dc2626; }}
+
+  .code-ref {{ background: {cbg}; border-left: 3px solid {acc}; padding: 9px 13px; border-radius: 0 4px 4px 0; font-size: 0.79rem; margin: 6px 0; }}
+  .code-ref * {{ color: {acc_b} !important; }}
+  .warn-box {{ background: {wbg}; border-left: 3px solid #f97316; padding: 9px 13px; border-radius: 0 8px 8px 0; font-size: 0.79rem; margin: 6px 0; }}
+  .warn-box * {{ color: #fdba74 !important; }}
+  .crit-box {{ background: {xbg}; border-left: 3px solid #ef4444; padding: 9px 13px; border-radius: 0 4px 4px 0; font-size: 0.79rem; margin: 6px 0; }}
+  .crit-box * {{ color: #fca5a5 !important; }}
+
+  .gauge-wrap {{ margin-bottom: 11px; }}
+  .gauge-label {{ display: flex; justify-content: space-between; font-size: 0.80rem; margin-bottom: 4px; }}
+  .gauge-label * {{ color: {txt} !important; }}
+  .gauge-bar-bg {{ background: {gbg}; border-radius: 6px; height: 10px; overflow: hidden; }}
+  .gauge-note {{ font-size: 0.71rem; color: {txt4} !important; margin-top: 3px; }}
+
+  .metric-card {{ background: {surf}; border: 1px solid {brd}; border-radius: 4px; padding: 16px 18px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }}
+  .metric-card .m-label {{ font-size: 0.70rem; text-transform: uppercase; letter-spacing: .08em; color: {txt4} !important; margin-bottom: 6px; }}
+  .metric-card .m-value {{ font-size: 1.8rem; font-weight: 800; color: {acc_b} !important; line-height: 1; }}
+  .metric-card .m-sub   {{ font-size: 0.72rem; color: {txt4} !important; margin-top: 4px; }}
+
+  .empty-state {{ background: {ebg}; border: 1px dashed {ebr}; border-radius: 4px; padding: 48px 20px; text-align: center; }}
+  .empty-state .icon {{ font-size: 2.8rem; }}
+  .empty-state p {{ color: {et} !important; font-size: 0.88rem; margin-top: 10px; }}
+
+  ::-webkit-scrollbar {{ width: 6px; height: 6px; }}
+  ::-webkit-scrollbar-track {{ background: {sc_t}; }}
+  ::-webkit-scrollbar-thumb {{ background: {sc_th}; border-radius: 3px; }}
+
+  [data-testid="stButton"] button[kind="primary"] {{
+    background: {bpb} !important; border: none !important; color: white !important;
+    font-weight: 700 !important; border-radius: 4px !important; letter-spacing: .03em !important; transition: all 0.2s ease !important;
+  }}
+  [data-testid="stButton"] button[kind="primary"]:hover {{ background: #2563eb !important; transform: translateY(-1px) !important; }}
+  [data-testid="stButton"] button[kind="secondary"] {{
+    background: {bsb} !important; border: 1px solid {bsbr} !important; color: {bst} !important; border-radius: 4px !important;
+  }}
+  [data-testid="stDownloadButton"] button {{
+    background: {bdb} !important; border: 1px solid {bdbr} !important; color: {bdt} !important; border-radius: 4px !important; font-weight: 600 !important;
+  }}
+  [data-testid="stFileUploader"] section {{
+    background: {upbg} !important; border: 1px dashed {upbr} !important; border-radius: 4px !important;
+  }}
+  [data-testid="stAlert"] {{ border-radius: 4px !important; }}
+  div[data-testid="stAlert"][data-baseweb="notification"] {{ background: {albg} !important; border-color: {albr} !important; }}
+
+  table {{ background: {tbg} !important; border-collapse: collapse; width: 100%; }}
+  th {{ background: {thbg} !important; color: {tht} !important; font-size: 0.78rem !important; padding: 8px 12px !important; border-bottom: 1px solid {brd} !important; }}
+  td {{ color: {ttd} !important; font-size: 0.78rem !important; padding: 7px 12px !important; border-bottom: 1px solid {ttdb} !important; }}
+  tr:hover td {{ background: {ttr} !important; }}
+</style>
+"""
+
+
 # ── Persistent history helpers ────────────────────────────────────────────────
 HISTORY_DIR  = os.path.join(_DATA, "history")
 HISTORY_JSON = os.path.join(HISTORY_DIR, "history.json")
@@ -98,8 +276,17 @@ st.set_page_config(
     layout="wide",
 )
 
-# ── CSS — Full Dark Mode ──────────────────────────────────────────────────────
-st.markdown("""
+# ── Session state init (must come before CSS so dark_mode is available) ───────
+if "history" not in st.session_state:
+    st.session_state["history"] = _load_history_from_disk()
+if "dark_mode" not in st.session_state:
+    st.session_state["dark_mode"] = True
+
+# ── CSS — theme-aware ─────────────────────────────────────────────────────────
+st.markdown(_build_css(st.session_state["dark_mode"]), unsafe_allow_html=True)
+
+# ── (CSS content moved to _build_css() function above) ────────────────────────
+_DEAD_CSS_PLACEHOLDER = """
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -340,14 +527,14 @@ st.markdown("""
        padding: 7px 12px !important; border-bottom: 1px solid #111827 !important; }
   tr:hover td { background: #0f1f3d !important; }
 </style>
-""", unsafe_allow_html=True)
+"""  # end _DEAD_CSS_PLACEHOLDER (not rendered — kept for reference only)
 
-# ── Session state init ────────────────────────────────────────────────────────
-if "history" not in st.session_state:
-    st.session_state["history"] = _load_history_from_disk()
-
-# ── Sidebar — Structural Parameters ──────────────────────────────────────────
+# ── Sidebar — Theme toggle + Structural Parameters ───────────────────────────
 with st.sidebar:
+    # ── Theme toggle ──────────────────────────────────────────────────────────
+    st.toggle("🌙  Dark Mode", value=True, key="dark_mode")
+    st.markdown("---")
+
     st.markdown("### SITE INFORMATION")
     site_name     = st.text_input("Building / Site Name", value="DTU Civil Block")
     inspector     = st.text_input("Inspector Name", value="")
